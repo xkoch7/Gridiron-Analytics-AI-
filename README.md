@@ -1,4 +1,4 @@
-# Gridiron Analytics AI
+# Gridiron Analytics
 
 An AI-powered NFL analytics platform that uses real-time and historical stats to predict plays, scores and player performance. It helps you build a better fantasy football team and gives you data-driven odds for games and player props.
 
