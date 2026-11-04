@@ -1,0 +1,17 @@
+# Node / Next.js
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+
+# Env files
+.env
+.env.local
+
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Vercel
+.vercel

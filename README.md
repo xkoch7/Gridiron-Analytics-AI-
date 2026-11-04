@@ -30,7 +30,7 @@ An AI-powered NFL analytics platform that uses real-time and historical stats to
 
 | Layer | Technologies |
 | --- | --- |
-| Frontend | React, TypeScript, HTML, CSS |
+| Frontend | Next.js (React), TypeScript, HTML, CSS |
 | Backend | TypeScript (Node.js), Python, FastAPI |
 | AI / Data | Python (prediction models trained on historical and live NFL stats) |
 | Database | Supabase (free tier, PostgreSQL / SQL) |
@@ -51,10 +51,11 @@ An AI-powered NFL analytics platform that uses real-time and historical stats to
 git clone https://github.com/<your-username>/Gridiron-Analytics-AI-.git
 cd Gridiron-Analytics-AI-
 
-# Install frontend dependencies
+# Install website dependencies
 npm install
 
 # Set up the Python backend
+cd backend
 python -m venv venv
 venv\Scripts\activate        # Windows
 # source venv/bin/activate   # macOS/Linux
@@ -62,22 +63,54 @@ pip install -r requirements.txt
 ```
 
 ### Environment Variables
-Create a `.env` file in the project root:
-
-```env
-SUPABASE_URL=your-supabase-url
-SUPABASE_ANON_KEY=your-supabase-anon-key
-```
+Copy `.env.example` to `.env.local` and `backend/.env.example` to `backend/.env`, then fill in your Supabase keys.
 
 ### Running Locally
 
 ```bash
-# Start the frontend
+# Start the website at http://localhost:3000
 npm run dev
 
-# Start the FastAPI backend (in a separate terminal)
-uvicorn main:app --reload
+# Start the FastAPI backend at http://localhost:8000 (separate terminal, venv active)
+npm run backend
 ```
+
+Requests to `/api/...` on the website are forwarded to the FastAPI backend (see `next.config.ts`).
+
+## Project Structure
+
+```
+src/                           Next.js website (React + TypeScript)
+  app/                         Each folder is a page (App Router)
+    page.tsx                   /          Landing page
+    login/page.tsx             /login     Sign in / sign up
+    fantasy/page.tsx           /fantasy   Fantasy predictions
+    betting/page.tsx           /betting   Betting assistant
+    teams/page.tsx             /teams     Team stats and predictions
+    account/page.tsx           /account   Account settings
+    layout.tsx                 Shared layout (navbar) for every page
+    globals.css                Global styles
+  components/
+    layout/                    Navbar and other page-frame pieces
+    ui/                        Reusable building blocks (Card, PageHeader)
+  data/                        Static data (nav links, etc.)
+  lib/                         Supabase client and API helpers
+  types/                       Shared TypeScript types
+
+backend/                       Python + FastAPI (AI predictions)
+  src/
+    main.py                    App entry point
+    api/routes/                API endpoints (fantasy, betting, teams)
+    services/                  Prediction logic
+    models/                    Request/response schemas
+    core/                      Config and settings
+
+supabase/migrations/           Database tables (SQL)
+public/                        Images, icons and other static files
+scripts/                       Helper scripts (data imports, etc.)
+```
+
+To add a new page, create a folder in `src/app/` with a `page.tsx` inside. For example, `src/app/players/page.tsx` becomes `/players`. To show it in the navbar, add it to `src/data/navLinks.ts`.
 
 ## Contributing
 
