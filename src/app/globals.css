@@ -1,9 +1,13 @@
 :root {
-  --bg: #0f1a14;
-  --surface: #182a20;
-  --text: #f2f5f3;
-  --muted: #a3b5aa;
-  --accent: #3ccf7a;
+  --bg: #0b1529;
+  --surface: #13203b;
+  --surface-raised: #1b2b4d;
+  --text: #f4f6fa;
+  --muted: #9aa8c2;
+  --accent: #d7263d;
+  --accent-dark: #b81d31;
+  --steel: #5b7db8;
+  --border: #2a3a5c;
 }
 
 * {
@@ -11,10 +15,20 @@
 }
 
 body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   margin: 0;
-  font-family: system-ui, sans-serif;
+  font-family: var(--font-body), system-ui, sans-serif;
   background: var(--bg);
   color: var(--text);
+}
+
+h1,
+h2 {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 800;
+  line-height: 1;
 }
 
 a {
@@ -22,10 +36,23 @@ a {
   text-decoration: none;
 }
 
+main {
+  flex: 1;
+}
+
 .container {
+  width: 100%;
   max-width: 1100px;
   margin: 0 auto;
   padding: 2rem 1rem;
+}
+
+/* Pages like login take over the whole area under the navbar */
+main.container:has(> .full-bleed) {
+  display: flex;
+  flex-direction: column;
+  max-width: none;
+  padding: 0;
 }
 
 .narrow {
@@ -47,42 +74,70 @@ a {
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
-  padding: 1rem;
+  padding: 0.9rem 1.5rem;
   background: var(--surface);
+  border-bottom: 3px solid var(--accent);
 }
 
 .navbar nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 1.25rem;
   align-items: center;
+  font-weight: 600;
+}
+
+.navbar nav a:not(.btn) {
+  color: var(--muted);
+  text-underline-offset: 6px;
+  text-decoration-thickness: 2px;
+}
+
+.navbar nav a:not(.btn):hover {
+  color: var(--text);
 }
 
 .navbar nav a.active {
-  color: var(--accent);
+  color: var(--text);
+  text-decoration-line: underline;
+  text-decoration-color: var(--accent);
 }
 
 .brand {
-  font-weight: 700;
+  font-family: var(--font-display), sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 
 .btn {
   display: inline-block;
   padding: 0.5rem 1rem;
   border: none;
-  border-radius: 6px;
+  border-radius: 4px;
   background: var(--accent);
-  color: #000;
-  font-weight: 600;
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
   cursor: pointer;
+}
+
+.btn:hover:not(:disabled) {
+  background: var(--accent-dark);
 }
 
 .link-btn {
   margin-top: 1rem;
   background: none;
   border: none;
-  color: var(--accent);
+  color: var(--text);
+  font: inherit;
   cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
 }
 
 .grid {
@@ -94,7 +149,9 @@ a {
 
 .card {
   padding: 1.25rem;
-  border-radius: 8px;
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--accent);
+  border-radius: 6px;
   background: var(--surface);
 }
 
@@ -112,12 +169,20 @@ a {
 
 .form input {
   padding: 0.5rem;
-  border-radius: 6px;
-  border: 1px solid var(--muted);
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--surface-raised);
+  color: var(--text);
+  font: inherit;
 }
 
 .disclaimer {
   margin-top: 2rem;
   font-size: 0.85rem;
   color: var(--muted);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: default;
 }

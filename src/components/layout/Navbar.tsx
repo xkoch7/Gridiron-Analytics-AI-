@@ -1,11 +1,28 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import type { Session } from "@supabase/supabase-js";
 import { navLinks } from "@/data/navLinks";
+import { supabase } from "@/lib/supabase";
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const [session, setSession] = useState<Session | null>(null);
+
+  // Keep the navbar in sync with login/logout
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setSession(data.session));
+    const { data } = supabase.auth.onAuthStateChange((_event, session) => setSession(session));
+    return () => data.subscription.unsubscribe();
+  }, []);
+
+  async function handleLogout() {
+    await supabase.auth.signOut();
+    router.push("/");
+  }
 
   return (
     <header className="navbar">
@@ -22,9 +39,15 @@ export default function Navbar() {
             {link.label}
           </Link>
         ))}
-        <Link href="/login" className="btn">
-          Log In
-        </Link>
+        {session ? (
+          <button type="button" className="btn" onClick={handleLogout}>
+            Log Out
+          </button>
+        ) : (
+          <Link href="/login" className="btn">
+            Log In
+          </Link>
+        )}
       </nav>
     </header>
   );
